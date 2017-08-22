@@ -1,0 +1,75 @@
+#board {
+    display: table;
+    margin: 0 auto;
+}
+
+.row div {
+    vertical-align: top;
+    display: inline-flex;
+}
+
+.square {
+    width: 64px;
+    height: 64px;
+}
+
+.white {
+    background: wheat;
+}
+
+.black {
+    background: saddlebrown;
+}
+
+.piece {
+    width: 64px;
+    height: 64px;
+}
+
+.b {
+    background: url("pieces/b-b.png") no-repeat center;
+}
+
+.B {
+    background: url("pieces/w-B.png") no-repeat center;
+}
+
+.k {
+    background: url("pieces/b-k.png") no-repeat center;
+}
+
+.K {
+    background: url("pieces/w-K.png") no-repeat center;
+}
+
+.n {
+    background: url("pieces/b-n.png") no-repeat center;
+}
+
+.N {
+    background: url("pieces/w-N.png") no-repeat center;
+}
+
+.p {
+    background: url("pieces/b-p.png") no-repeat center;
+}
+
+.P {
+    background: url("pieces/w-P.png") no-repeat center;
+}
+
+.q {
+    background: url("pieces/b-q.png") no-repeat center;
+}
+
+.Q {
+    background: url("pieces/w-Q.png") no-repeat center;
+}
+
+.r {
+    background: url("pieces/b-r.png") no-repeat center;
+}
+
+.R {
+    background: url("pieces/w-R.png") no-repeat center;
+}
