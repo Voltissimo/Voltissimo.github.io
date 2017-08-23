@@ -1,7 +1,13 @@
-#board {
-    display: table;
-    margin: 0 auto;
+#root {
+    display: flex;
+    justify-content: center;
 }
+
+/*Uncomment the style for the board to play chess in a way more visually challenging way*/
+/*#board {*/
+    /*display: flex;*/
+    /*margin: 0 auto;*/
+/*}*/
 
 .row div {
     vertical-align: top;
@@ -11,6 +17,19 @@
 .square {
     width: 64px;
     height: 64px;
+    transition: border 0.25s;
+}
+
+.highlighted {
+    border: 2px cornflowerblue solid;
+}
+
+.highlighted2 {
+
+}
+
+.selected {
+    border: 2px mediumseagreen solid;
 }
 
 .white {
@@ -22,8 +41,8 @@
 }
 
 .piece {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
 }
 
 .b {

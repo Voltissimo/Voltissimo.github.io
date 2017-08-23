@@ -11,8 +11,9 @@ class ChessSquare extends Component {
         let file = this.props.tileName[0], rank = parseFloat(this.props.tileName[1]);
         let color = (FILES.indexOf(file) + (rank - 1)) % 2 === 0 ? 'black' : 'white';
         return (
-            <div className={`square ${color}`}>
-                <div className={`piece ${this.props.piece ? this.props.piece : ''}`}/>
+            <div className={`square ${color}`}
+                 onClick={(e) => this.props.onSelectCallBack(this.props.tileName)}>
+                <div className={`piece ${this.props.piece ? this.props.piece : ''} ${this.props.tileStyle}`}/>
             </div>
         )
     }
@@ -20,11 +21,30 @@ class ChessSquare extends Component {
 
 ChessSquare.PropTypes = {
     tileName: PropTypes.string.isRequired,
-    piece: PropTypes.string
+    piece: PropTypes.string,
+    tileStyle: PropTypes.string,
+    onSelectCallBack: PropTypes.func.isRequired
 };
 
 
 class ChessBoard extends Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            selectedSquare: null
+        }
+    }
+
+    onSelectSquareHandle(selectedSquare) {
+        this.setState({
+            selectedSquare: selectedSquare
+        })
+    }
+
+    getTileStyle(tileName) {
+        return tileName === this.state.selectedSquare ? 'selected' : ''
+    }
+
     render() {
         let rank_count = 0;
         let ranks = this.props.FEN.split(' ')[0].split('/').map((FEN_row) => {
@@ -32,15 +52,23 @@ class ChessBoard extends Component {
             let file_count = 0;
             for (let char of FEN_row) {
                 if (isNaN(parseFloat(char))) {  // a letter (a piece)
-                    rank.push(<ChessSquare tileName={`${FILES[file_count]}${RANKS[rank_count]}`}
+                    let tileName = `${FILES[file_count]}${RANKS[rank_count]}`;
+                    rank.push(<ChessSquare tileName={tileName}
                                            piece={char}
-                                           key={`${FILES[file_count]}${RANKS[rank_count]} ${char}`}/>);
+                                           tileStyle={this.getTileStyle(tileName)}
+                                           onSelectCallBack={this.onSelectSquareHandle.bind(this)}
+                                           key={`${FILES[file_count]}${RANKS[rank_count]} ${char} ${this.state.selectedSquare}`}
+                    />);
                     file_count++;
                 } else {  // a number (empty squares)
                     let empty_squares_count = parseFloat(char);
                     while (empty_squares_count >= 1) {
-                        rank.push(<ChessSquare tileName={`${FILES[file_count]}${RANKS[rank_count]}`}
-                                               key={`${FILES[file_count]}${RANKS[rank_count]} 1`}/>);
+                        let tileName = `${FILES[file_count]}${RANKS[rank_count]}`;
+                        rank.push(<ChessSquare tileName={tileName}
+                                               tileStyle={this.getTileStyle(tileName)}
+                                               onSelectCallBack={this.onSelectSquareHandle.bind(this)}
+                                               key={`${FILES[file_count]}${RANKS[rank_count]} ${char} ${this.state.selectedSquare}`}
+                        />);
                         empty_squares_count--;
                         file_count++;
                     }
@@ -56,7 +84,9 @@ class ChessBoard extends Component {
 }
 
 ChessBoard.propTypes = {
-    FEN: PropTypes.string.isRequired
+    FEN: PropTypes.string.isRequired,
+    highlightedSquares: PropTypes.arrayOf(PropTypes.string),
+    highlighted2Squares: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default ChessBoard
