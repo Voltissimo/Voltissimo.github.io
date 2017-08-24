@@ -91,7 +91,9 @@ class ChessBoard extends Component {
 ChessBoard.propTypes = {
     FEN: PropTypes.string.isRequired,
     highlightedSquares: PropTypes.arrayOf(PropTypes.string),
-    highlighted2Squares: PropTypes.arrayOf(PropTypes.string)
+    highlighted2Squares: PropTypes.arrayOf(PropTypes.string),
+    onMoveMadeHandle: PropTypes.func,
+    onPieceCapturedHandle: PropTypes.func
 };
 
 export default ChessBoard

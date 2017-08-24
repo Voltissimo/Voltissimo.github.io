@@ -3,6 +3,10 @@
     justify-content: center;
 }
 
+#app_wrapper {
+    display: flex;
+}
+
 /*Uncomment the style for the board to play chess in a way more visually challenging way*/
 /*#board {*/
     /*display: flex;*/
@@ -43,4 +47,24 @@
 
 .selected {
     border: 2px mediumseagreen solid;
+}
+
+/* right panel */
+#right_panel {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+#right_panel > div {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+#move_history_panel {
+    background-color: whitesmoke;
+}
+
+#captured_pieces_panel {
+    background-color: cornflowerblue;
 }
