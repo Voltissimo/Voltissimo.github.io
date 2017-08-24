@@ -22,7 +22,7 @@
     /* so that the piece doesn't move on select */
     box-sizing: border-box;
     border: 2px transparent solid;
-    /*background-position: right 0px center;*/
+    background-position: left -1px center;
 }
 
 .square.dark {
