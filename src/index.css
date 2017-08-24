@@ -14,10 +14,23 @@
     display: inline-flex;
 }
 
+/* squares */
 .square {
     width: 64px;
     height: 64px;
     transition: border 0.25s;
+    /* so that the piece doesn't move on select */
+    box-sizing: border-box;
+    border: 2px transparent solid;
+    /*background-position: right 0px center;*/
+}
+
+.square.dark {
+    background-color: saddlebrown;
+}
+
+.square.light {
+    background-color: wheat;
 }
 
 .highlighted {
@@ -30,10 +43,4 @@
 
 .selected {
     border: 2px mediumseagreen solid;
-}
-
-.innerSquare {
-    width: 60px;
-    height: 60px;
-    position: absolute;
 }

@@ -1,51 +1,24 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './index.css';
+import './piece_images.css';
 
 const RANKS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 
-function pieceNameToUrl(pieceName) {
-    switch (pieceName) {
-        case 'p':
-            return "https://upload.wikimedia.org/wikipedia/commons/c/cd/Chess_pdt60.png";
-        case 'P':
-            return "https://upload.wikimedia.org/wikipedia/commons/0/04/Chess_plt60.png";
-        case 'b':
-            return "https://upload.wikimedia.org/wikipedia/commons/8/81/Chess_bdt60.png";
-        case 'B':
-            return "https://upload.wikimedia.org/wikipedia/commons/9/9b/Chess_blt60.png";
-        case 'n':
-            return "https://upload.wikimedia.org/wikipedia/commons/f/f1/Chess_ndt60.png";
-        case 'N':
-            return "https://upload.wikimedia.org/wikipedia/commons/2/28/Chess_nlt60.png";
-        case 'r':
-            return "https://upload.wikimedia.org/wikipedia/commons/a/a0/Chess_rdt60.png";
-        case 'R':
-            return "https://upload.wikimedia.org/wikipedia/commons/5/5c/Chess_rlt60.png";
-        case 'q':
-            return "https://upload.wikimedia.org/wikipedia/commons/a/af/Chess_qdt60.png";
-        case 'Q':
-            return "https://upload.wikimedia.org/wikipedia/commons/4/49/Chess_qlt60.png";
-        case 'k':
-            return "https://upload.wikimedia.org/wikipedia/commons/e/e3/Chess_kdt60.png";
-        case 'K':
-            return "https://upload.wikimedia.org/wikipedia/commons/3/3b/Chess_klt60.png";
-        default:
-            return;
-    }
-}
 
 class ChessSquare extends Component {
     render() {
         let file = this.props.tileName[0], rank = parseFloat(this.props.tileName[1]);
-        let color = (FILES.indexOf(file) + (rank - 1)) % 2 === 0 ? 'saddlebrown' : 'wheat';
+        let tileColor = (FILES.indexOf(file) + (rank - 1)) % 2 === 0 ? 'dark' : 'light';
+        let squareClasses = [
+            'square', this.props.piece, tileColor, this.props.tileStyle
+        ].filter(n => true).join(' ');
+
         return (
-            <div className="square"
-                 style={{backgroundColor: color, backgroundImage: `url(${pieceNameToUrl(this.props.piece)})`}}
+            <div className={squareClasses}
                  onClick={(e) => this.props.onSelectCallBack(this.props.tileName)}>
-                <div className={this.props.tileStyle + ' innerSquare'}/>
             </div>
         )
     }
