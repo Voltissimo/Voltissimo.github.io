@@ -45,6 +45,10 @@
 
 }
 
+.legalMoveHighlight {
+    border: 2px darkseagreen dashed;
+}
+
 .selected {
     border: 2px mediumseagreen solid;
 }

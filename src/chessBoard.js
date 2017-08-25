@@ -13,7 +13,8 @@ class ChessSquare extends Component {
         let file = this.props.tileName[0], rank = parseFloat(this.props.tileName[1]);
         let tileColor = (FILES.indexOf(file) + (rank - 1)) % 2 === 0 ? 'dark' : 'light';
         let squareClasses = [
-            'square', this.props.piece, tileColor, this.props.tileStyle
+            'square', this.props.piece, tileColor, this.props.tileStyle,
+            this.props.legalMoveHighlight ? 'legalMoveHighlight' : ''
         ].filter(n => true).join(' ');
 
         return (
@@ -28,6 +29,7 @@ ChessSquare.PropTypes = {
     tileName: PropTypes.string.isRequired,
     piece: PropTypes.string,
     tileStyle: PropTypes.string,
+    legalMoveHighlight: PropTypes.bool.isRequired,
     onSelectCallBack: PropTypes.func.isRequired
 };
 
@@ -72,6 +74,8 @@ class ChessBoard extends Component {
     }
 
     render() {
+        let legalMovesHighlight = this.state.selectedSquare !== null ?
+            this.props.legalMoves[this.state.selectedSquare] : [];
         let rank_count = 0;
         let ranks = this.props.FEN.split(' ')[0].split('/').map((FEN_row) => {
             let rank = [];
@@ -83,6 +87,7 @@ class ChessBoard extends Component {
                                            piece={char}
                                            tileStyle={this.getTileStyle(tileName)}
                                            onSelectCallBack={this.onSelectSquareHandle.bind(this)}
+                                           legalMoveHighlight={legalMovesHighlight.includes(tileName)}
                                            key={`${FILES[file_count]}${RANKS[rank_count]} ${char} ${this.state.selectedSquare}`}
                     />);
                     file_count++;
@@ -93,6 +98,7 @@ class ChessBoard extends Component {
                         rank.push(<ChessSquare tileName={tileName}
                                                tileStyle={this.getTileStyle(tileName)}
                                                onSelectCallBack={this.onSelectSquareHandle.bind(this)}
+                                               legalMoveHighlight={legalMovesHighlight.includes(tileName)}
                                                key={`${FILES[file_count]}${RANKS[rank_count]} ${char} ${this.state.selectedSquare}`}
                         />);
                         empty_squares_count--;
