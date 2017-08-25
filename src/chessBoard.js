@@ -36,14 +36,35 @@ class ChessBoard extends Component {
     constructor() {
         super(...arguments);
         this.state = {
-            selectedSquare: null
+            selectedSquare: null,
         }
     }
 
     onSelectSquareHandle(selectedSquare) {
-        this.setState({
-            selectedSquare: selectedSquare
-        })
+        if (this.state.selectedSquare === null) {
+            if (selectedSquare in this.props.legalMoves) {  // `in` works for objects
+                this.setState({
+                    selectedSquare: selectedSquare,
+                })
+            }  // otherwise this.state.selectedSquare remains null
+        } else {
+            if (this.props.legalMoves[this.state.selectedSquare].includes(selectedSquare)) {  // but not for arrays
+                alert(`Made move ${this.state.selectedSquare} -> ${selectedSquare}`);
+                this.setState({
+                    selectedSquare: null
+                })
+            } else {
+                if (selectedSquare in this.props.legalMoves) {  // change the piece to move
+                    this.setState({
+                        selectedSquare: selectedSquare
+                    })
+                } else {
+                    this.setState({
+                        selectedSquare: null
+                    })
+                }
+            }
+        }
     }
 
     getTileStyle(tileName) {
@@ -90,10 +111,10 @@ class ChessBoard extends Component {
 
 ChessBoard.propTypes = {
     FEN: PropTypes.string.isRequired,
+    legalMoves: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
     highlightedSquares: PropTypes.arrayOf(PropTypes.string),
     highlighted2Squares: PropTypes.arrayOf(PropTypes.string),
     onMoveMadeHandle: PropTypes.func,
-    onPieceCapturedHandle: PropTypes.func
 };
 
 export default ChessBoard
