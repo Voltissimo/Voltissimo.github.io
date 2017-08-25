@@ -4,70 +4,53 @@ import React, {Component} from 'react';
 import ChessBoard from "./chessBoard";
 import './index.css';
 
+const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+const boardProcessorUrl = "https://deliboarate.herokuapp.com/position";
+
 
 export default class ChessApp extends Component {
-    // TODO this.state to track game progress (right now it's only startpos)
+    constructor() {
+        super(...arguments);
+        this.state = {
+            history: [],
+            currentBoardIndex: -1,
+        }
+    }
+
+    componentDidMount() {
+        fetch(proxyUrl + boardProcessorUrl + "?fen=startpos", {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    history: this.state.history.concat(data),  // this.state.history is an empty list though
+                    currentBoardIndex: 0
+                });
+            })
+            .catch((e) => alert(e))
+    }
+
+    makeMove(currentFEN, currentSquare, destinationSquare) {
+        fetch(proxyUrl + boardProcessorUrl + `?fen=${currentFEN}&m=${currentSquare}${destinationSquare}`, {method: "GET"})
+            .then(response => response.json())
+            .then(data => this.setState({
+                history: this.state.history.concat(data),
+                currentBoardIndex: this.state.currentBoardIndex + 1
+            }))
+    }
+
     render() {
-        // TODO (find a way to) fetch the data from heroku server
-        const fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        const legalMoves = {
-            a2: [
-                "a3",
-                "a4"
-            ],
-            b1: [
-                "c3",
-                "a3"
-            ],
-            b2: [
-                "b3",
-                "b4"
-            ],
-            c2: [
-                "c3",
-                "c4"
-            ],
-            d2: [
-                "d3",
-                "d4"
-            ],
-            e2: [
-                "e3",
-                "e4"
-            ],
-            f2: [
-                "f3",
-                "f4"
-            ],
-            g1: [
-                "h3",
-                "f3"
-            ],
-            g2: [
-                "g3",
-                "g4"
-            ],
-            h2: [
-                "h3",
-                "h4"
-            ]
-        };
+        let currentBoard = this.state.history[this.state.currentBoardIndex];
+        console.log(currentBoard);
+        if (currentBoard === undefined) {
+            currentBoard = {fen: "8/8/8/8/8/8/8/8", moves: {}};
+        }
         return (
             <div id="app_wrapper">
-                <ChessBoard FEN={fen} legalMoves={legalMoves}/>
+                <ChessBoard FEN={currentBoard["fen"]} legalMoves={currentBoard["moves"]} onMoveMadeHandle={this.makeMove.bind(this)}/>
                 <RightPanel/>
             </div>)
-        /*return fetch("deliboarate.herokuapp.com/position?fen=startpos")
-            .then(response => response.json())
-            .then(json => {
-                let chessBoard = JSON.parse(json);
-                return (
-                    <div id="app_wrapper">
-                        <ChessBoard FEN={chessBoard["fen"]} legalMoves={chessBoard["moves"]}/>
-                        <RightPanel/>
-                    </div>
-                )
-            }).catch(e => console.log('failed', e))*/
     }
 }
 

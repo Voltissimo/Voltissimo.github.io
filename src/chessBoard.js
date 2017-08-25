@@ -7,7 +7,6 @@ const RANKS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 
-
 class ChessSquare extends Component {
     render() {
         let file = this.props.tileName[0], rank = parseFloat(this.props.tileName[1]);
@@ -38,20 +37,24 @@ class ChessBoard extends Component {
     constructor() {
         super(...arguments);
         this.state = {
-            selectedSquare: null,
-        }
+            selectedSquare: null
+        };
     }
 
     onSelectSquareHandle(selectedSquare) {
         if (this.state.selectedSquare === null) {
             if (selectedSquare in this.props.legalMoves) {  // `in` works for objects
                 this.setState({
-                    selectedSquare: selectedSquare,
+                    selectedSquare: selectedSquare
                 })
             }  // otherwise this.state.selectedSquare remains null
         } else {
             if (this.props.legalMoves[this.state.selectedSquare].includes(selectedSquare)) {  // but not for arrays
+                // MAKE THE MOVE
+                /*
                 alert(`Made move ${this.state.selectedSquare} -> ${selectedSquare}`);
+                */
+                this.props.onMoveMadeHandle(this.props.FEN, this.state.selectedSquare, selectedSquare);
                 this.setState({
                     selectedSquare: null
                 })
